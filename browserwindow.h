@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
@@ -80,6 +80,8 @@ private slots:
     void handleWebViewUrlChanged(const QUrl &url);
     void handleWebViewIconChanged(const QIcon &icon);
     void handleWebActionEnabledChanged(QWebEnginePage::WebAction action, bool enabled);
+
+    void handlePlugButtonClicked(int index);//处理下拉列表的值
 
 private:
     QMenu *createFileMenu(TabWidget *tabWidget);

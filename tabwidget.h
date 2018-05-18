@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
@@ -41,9 +41,12 @@
 #ifndef TABWIDGET_H
 #define TABWIDGET_H
 
+#include <QLineEdit>
+#include <QScrollArea>
 #include <QTabWidget>
 #include <QWebEnginePage>
-
+#include <QWebEngineProfile>
+#include <QMap>
 QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
@@ -60,6 +63,9 @@ public:
 
     WebView *currentWebView() const;
 
+    QWebEngineProfile *getCurrentProfile() const;
+    void setCurrentProfile(QWebEngineProfile *value);
+
 signals:
     // current tab/page signals
     void linkHovered(const QString &link);
@@ -75,6 +81,8 @@ public slots:
     void triggerWebPageAction(QWebEnginePage::WebAction action);
 
     WebView *createTab(bool makeCurrent = true);
+    WebView *createTabById(int index,bool makeCurrent = true);
+
     void closeTab(int index);
     void nextTab();
     void previousTab();
@@ -87,9 +95,21 @@ private slots:
     void reloadAllTabs();
     void reloadTab(int index);
 
+    void downloadRequested(QWebEngineDownloadItem* dItem);//接收保存整个网页的请求
+    void htmlDownloadFinished();//整个网页保存完毕后 处理
+
 private:
     WebView *webView(int index) const;
     void setupView(WebView *webView);
+
+    QWebEngineProfile *currentProfile;//当前配置，用于切换配置，以便多用户登录
+    QMap<int,QWebEngineProfile*> profileName_map_profilePoint;
+    QMap<int,WebView*> profileName_map_WebViewMain;
+    QMap<int,WebView*> profileName_map_WebViewStudy;
+
+
+    QMap<QString,QStringList> oneCharDataMap;
+    QString autoOCR(const QList<QStringList> &ll);
 };
 
 #endif // TABWIDGET_H

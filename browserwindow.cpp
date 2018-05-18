@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
@@ -43,6 +43,7 @@
 #include "tabwidget.h"
 #include "urllineedit.h"
 #include "webview.h"
+#include "plugform.h"
 #include <QApplication>
 #include <QCloseEvent>
 #include <QDesktopWidget>
@@ -356,9 +357,28 @@ QToolBar *BrowserWindow::createToolBar()
     });
     navigationBar->addAction(m_stopReloadAction);
     navigationBar->addWidget(m_urlLineEdit);
+
+    PlugForm *m_plugForm = new PlugForm();
+    m_plugForm->initComboBox(QStringList()<<"createTabById"<<"2");
+    connect(m_plugForm,&PlugForm::button_clicked,this,&BrowserWindow::handlePlugButtonClicked);
+    navigationBar->addWidget(m_plugForm);
+
     int size = m_urlLineEdit->sizeHint().height();
     navigationBar->setIconSize(QSize(size, size));
     return navigationBar;
+}
+
+void BrowserWindow::handlePlugButtonClicked(int index)
+{
+    switch (index) {
+    case 0:
+        m_tabWidget->createTabById(1);
+        loadHomePage();
+        qDebug()<<m_tabWidget->currentWebView()->page()->profile()->cachePath();
+        break;
+    default:
+        break;
+    }
 }
 
 void BrowserWindow::handleWebViewIconChanged(const QIcon &icon)
@@ -450,9 +470,9 @@ void BrowserWindow::closeEvent(QCloseEvent *event)
     deleteLater();
 }
 
-void BrowserWindow::loadHomePage()
+void BrowserWindow::loadHomePage()//通过m_tabWidget->setUrl，在当前tab打开主页
 {
-    loadPage(QStringLiteral("http://www.qt.io"));
+    loadPage(QStringLiteral("http://www.sppet.cn/student/course!listBottom.action"));
 }
 
 void BrowserWindow::loadPage(const QString &page)

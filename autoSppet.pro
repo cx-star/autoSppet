@@ -1,8 +1,9 @@
 TEMPLATE = app
 TARGET = autoSppet
-QT += webenginewidgets
+QT += webenginewidgets core
 CONFIG += c++11
 
+PRECOMPILED_HEADER += utf8.h
 HEADERS += \
     browser.h \
     browserwindow.h \
@@ -10,7 +11,9 @@ HEADERS += \
     urllineedit.h \
     webview.h \
     webpage.h \
-    webpopupwindow.h
+    webpopupwindow.h \
+    utf8.h \
+    plugform.h
 
 SOURCES += \
     browser.cpp \
@@ -20,11 +23,13 @@ SOURCES += \
     urllineedit.cpp \
     webview.cpp \
     webpage.cpp \
-    webpopupwindow.cpp
+    webpopupwindow.cpp \
+    plugform.cpp
 
 FORMS += \
     certificateerrordialog.ui \
-    passworddialog.ui
+    passworddialog.ui \
+    plugform.ui
 
 RESOURCES += data/simplebrowser.qrc
 
